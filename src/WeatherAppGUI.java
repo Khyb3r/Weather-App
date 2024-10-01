@@ -72,10 +72,38 @@ public class WeatherAppGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String userInput = searchField.getText();
 
-                if (userInput.replaceAll())
+                if (userInput.replaceAll("\\s","").length() <= 0) {
+                    return;
+                }
 
-                weatherData = WeatherApplication.getWeatherData()
+                weatherData = WeatherApplication.getWeatherData(userInput);
 
+                String updateWeatherCondition = (String) weatherData.get("weather_condition");
+                switch (updateWeatherCondition) {
+                    case "Clear":
+                        weatherImage.setIcon(loadImage("src/assets/clear.png"));
+                        break;
+                    case "Cloudy":
+                        weatherImage.setIcon(loadImage("src/assets/cloudy.png"));
+                        break;
+                    case "Rain":
+                        weatherImage.setIcon(loadImage("src/assets/rain.png"));
+                        break;
+                    case "Snow":
+                        weatherImage.setIcon(loadImage("src/assets/snow.png"));
+                        break;
+                }
+
+                double temperature = (double) weatherData.get("temperature");
+                temperatureText.setText(temperature + "C");
+
+                long humidity = (long) weatherData.get("humidity");
+                humidityText.setText("<html><b>Humidity</b>" + humidity + "</html>");
+
+                temperatureDescription.setText(updateWeatherCondition);
+
+                double windspeed = (double) weatherData.get("windspeed");
+                windspeedText.setText("<html><b>Windspeed</b>" + windspeed +"</html>");
             }
         });
         searchButton.setBounds(375,13,47,45);
@@ -94,4 +122,5 @@ public class WeatherAppGUI extends JFrame {
         System.out.println("System could not load image");
         return null;
     }
+    private
 }
