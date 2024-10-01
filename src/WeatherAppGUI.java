@@ -21,6 +21,8 @@ public class WeatherAppGUI extends JFrame {
         setLayout(null);
         setResizable(false);
         addUiComponents();
+        setVisible(true);
+        getContentPane().setBackground(Color.GRAY);
     }
 
     public void addUiComponents() {
@@ -29,22 +31,23 @@ public class WeatherAppGUI extends JFrame {
         searchField.setFont(new Font("Dialog", Font.PLAIN, 24));
         add(searchField);
 
-
         JLabel weatherImage = new JLabel(loadImage("src/assets/cloudy.png"));
         weatherImage.setBounds(0,125,450,217);
+        weatherImage.setHorizontalAlignment(SwingConstants.CENTER);
         add(weatherImage);
 
-        JLabel temperatureText = new JLabel("10 C");
-        temperatureText.setFont(new Font("Dialog", Font.BOLD, 24));
-        temperatureText.setBounds(0,350,450,54);
-
+        JLabel temperatureText = new JLabel("10 C°");
+        temperatureText.setFont(new Font("Monospaced", Font.BOLD, 34));
+        temperatureText.setBounds(0,335,450,30);
+        temperatureText.setHorizontalAlignment(SwingConstants.CENTER);
         temperatureText.setHorizontalAlignment(SwingConstants.CENTER);
         add(temperatureText);
 
         JLabel temperatureDescription = new JLabel("Cloudy");
-        temperatureDescription.setBounds(0,405,450,36);
-        temperatureDescription.setFont(new Font("Dialog", Font.PLAIN, 32));
+        temperatureDescription.setBounds(0,370,440,36);
+        temperatureDescription.setFont(new Font("Monospaced", Font.BOLD, 32));
         temperatureDescription.setHorizontalAlignment(SwingConstants.CENTER);
+        temperatureDescription.setForeground(Color.WHITE);
         add(temperatureDescription);
 
         JLabel humidityImage = new JLabel(loadImage("src/assets/humidity.png"));
@@ -53,16 +56,19 @@ public class WeatherAppGUI extends JFrame {
 
         JLabel humidityText = new JLabel("<html><b>Humidity</b> 100%</html>");
         humidityText.setFont(new Font("Dialog", Font.PLAIN, 16));
+        humidityText.setForeground(Color.CYAN);
         humidityText.setBounds(90,500,85,55);
+
         add(humidityText);
 
         JLabel windspeedImage = new JLabel(loadImage("src/assets/windspeed.png"));
-        windspeedImage.setBounds(220,500,74,66);
+        windspeedImage.setBounds(220,500,80,66);
         add(windspeedImage);
 
         JLabel windspeedText = new JLabel("<html><b>Windspeed</b> 9mp/h</html>");
         windspeedText.setFont(new Font("Dialog", Font.PLAIN, 16));
-        windspeedText.setBounds(310,500,85,55);
+        windspeedText.setBounds(310,500,100,55);
+        windspeedText.setForeground(Color.getHSBColor(100,200,300));
         add(windspeedText);
 
         JButton searchButton = new JButton(loadImage("src/assets/search.png"));
@@ -98,12 +104,12 @@ public class WeatherAppGUI extends JFrame {
                 temperatureText.setText(temperature + "C");
 
                 long humidity = (long) weatherData.get("humidity");
-                humidityText.setText("<html><b>Humidity</b>" + humidity + "</html>");
+                humidityText.setText("<html><b>Humidity</b>" + " " + humidity + "%" + "</html>");
 
                 temperatureDescription.setText(updateWeatherCondition);
 
                 double windspeed = (double) weatherData.get("windspeed");
-                windspeedText.setText("<html><b>Windspeed</b>" + windspeed +"</html>");
+                windspeedText.setText("<html><b>Windspeed</b>" + " " + windspeed + "mp/h" +"</html>");
             }
         });
         searchButton.setBounds(375,13,47,45);
