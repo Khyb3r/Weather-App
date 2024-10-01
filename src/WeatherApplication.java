@@ -81,7 +81,22 @@ public class WeatherApplication {
             JSONArray temperatureData = (JSONArray) hourlyWeatherData.get("temperature_2m");
             double temperature = (double) temperatureData.get(index);
 
+            JSONArray weatherCode = (JSONArray) hourlyWeatherData.get("weathercode");
+            String weatherCondition = getWeatherCode((long)weatherCode.get(index));
 
+            JSONArray humidityData = (JSONArray) hourlyWeatherData.get("relativehumidity_2m");
+            long humidity = (long) humidityData.get(index);
+
+            JSONArray windspeedData = (JSONArray) hourlyWeatherData.get("windspeed_10m");
+            double windspeed = (double) windspeedData.get(index);
+
+            JSONObject weatherData = new JSONObject();
+            weatherData.put("windspeed", windspeed);
+            weatherData.put("humidity", humidity);
+            weatherData.put("weather_condition", weatherCondition);
+            weatherData.put("temperature", temperature);
+
+            return weatherData;
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -122,5 +137,18 @@ public class WeatherApplication {
             }
         }
         return 0;
+    }
+    private static String getWeatherCode(long weatherCode) {
+        String weatherCondition = "";
+        if (weatherCode == 0L) {
+            weatherCondition = "Clear";
+        } else if (weatherCode > 0L && weatherCode <= 3L) {
+            weatherCondition = "Cloudy";
+        } else if ((weatherCode <= 67 && weatherCode >= 51) || weatherCode >= 80L && weatherCode <= 99L) {
+            weatherCondition = "Rain";
+        } else if (weatherCode >= 71 && weatherCode <= 77) {
+            weatherCondition = "Snow";
+        }
+        return weatherCondition;
     }
 }

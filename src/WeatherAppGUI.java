@@ -1,11 +1,18 @@
+import org.json.simple.JSONObject;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 public class WeatherAppGUI extends JFrame {
+
+    private JSONObject weatherData;
+
     public WeatherAppGUI() {
         super("Weather App");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -22,10 +29,6 @@ public class WeatherAppGUI extends JFrame {
         searchField.setFont(new Font("Dialog", Font.PLAIN, 24));
         add(searchField);
 
-        JButton searchButton = new JButton(loadImage("src/assets/search.png"));
-        searchButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        searchButton.setBounds(375,13,47,45);
-        add(searchButton);
 
         JLabel weatherImage = new JLabel(loadImage("src/assets/cloudy.png"));
         weatherImage.setBounds(0,125,450,217);
@@ -62,8 +65,21 @@ public class WeatherAppGUI extends JFrame {
         windspeedText.setBounds(310,500,85,55);
         add(windspeedText);
 
+        JButton searchButton = new JButton(loadImage("src/assets/search.png"));
+        searchButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        searchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String userInput = searchField.getText();
 
+                if (userInput.replaceAll())
 
+                weatherData = WeatherApplication.getWeatherData()
+
+            }
+        });
+        searchButton.setBounds(375,13,47,45);
+        add(searchButton);
 
     }
 
