@@ -75,6 +75,13 @@ public class WeatherApplication {
             JSONObject weatherJsonResults = (JSONObject) parser.parse(String.valueOf(stringBuilder));
             JSONObject hourlyWeatherData = (JSONObject) weatherJsonResults.get("hourly");
 
+            JSONArray timeArray = (JSONArray) hourlyWeatherData.get("time");
+            int index = getIndexOfCurrentTime(timeArray);
+
+            JSONArray temperatureData = (JSONArray) hourlyWeatherData.get("temperature_2m");
+            double temperature = (double) temperatureData.get(index);
+
+
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -97,7 +104,7 @@ public class WeatherApplication {
         }
         return null;
     }
-    private static String getCurrentTime() {
+    public static String getCurrentTime() {
         LocalDateTime localDateTime = LocalDateTime.now();
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH':00'");
@@ -105,9 +112,15 @@ public class WeatherApplication {
         String formattedDateTime = localDateTime.format(dateTimeFormatter);
         return formattedDateTime;
     }
-    private static JSONObject indexOfCurrentTime(JSONArray timeList) {
+    public static int getIndexOfCurrentTime(JSONArray timeList) {
         String currentTime = getCurrentTime();
-        
 
+        for (int i = 0; i < timeList.size(); i++) {
+            String time = (String) timeList.get(i);
+            if (time.equalsIgnoreCase(currentTime)) {
+                return i;
+            }
+        }
+        return 0;
     }
 }
