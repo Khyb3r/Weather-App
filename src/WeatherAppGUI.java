@@ -122,5 +122,4 @@ public class WeatherAppGUI extends JFrame {
         System.out.println("System could not load image");
         return null;
     }
-    private
 }

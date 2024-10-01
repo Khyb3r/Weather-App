@@ -55,7 +55,7 @@ public class WeatherApplication {
         String urlString = "https://api.open-meteo.com/v1/forecast?latitude="+latitude+"&longitude="+longitude+"&hourly=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m";
 
         try {
-            HttpURLConnection connection = fetchAPIResponse(locationName);
+            HttpURLConnection connection = fetchAPIResponse(urlString);
 
             if (connection.getResponseCode()!= 200) {
                 throw new RuntimeException("Error, HttpResponseCode: " + connection.getResponseCode());
@@ -81,13 +81,13 @@ public class WeatherApplication {
             JSONArray temperatureData = (JSONArray) hourlyWeatherData.get("temperature_2m");
             double temperature = (double) temperatureData.get(index);
 
-            JSONArray weatherCode = (JSONArray) hourlyWeatherData.get("weathercode");
+            JSONArray weatherCode = (JSONArray) hourlyWeatherData.get("weather_code");
             String weatherCondition = getWeatherCode((long)weatherCode.get(index));
 
-            JSONArray humidityData = (JSONArray) hourlyWeatherData.get("relativehumidity_2m");
+            JSONArray humidityData = (JSONArray) hourlyWeatherData.get("relative_humidity_2m");
             long humidity = (long) humidityData.get(index);
 
-            JSONArray windspeedData = (JSONArray) hourlyWeatherData.get("windspeed_10m");
+            JSONArray windspeedData = (JSONArray) hourlyWeatherData.get("wind_speed_10m");
             double windspeed = (double) windspeedData.get(index);
 
             JSONObject weatherData = new JSONObject();
