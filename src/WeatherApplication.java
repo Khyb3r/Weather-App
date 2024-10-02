@@ -9,35 +9,55 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class WeatherApplication {
+
+    // method for the first API call which will return location data in a JSON Array
     public static JSONArray getLocationData(String locationName) {
+
+        // replace all spaces with '+' to match API requirements
         locationName = locationName.replace(" ", "+");
 
+        // contains the API url with our user inputted variable between to allow our own personal search
         String urlString = "https://geocoding-api.open-meteo.com/v1/search?name="
-                + locationName+ "&count=10&language=en&format=json";
+                + locationName + "&count=10&language=en&format=json";
+
 
         try {
+            // call API and get response
             HttpURLConnection conn = fetchAPIResponse(urlString);
 
+            // response code gathered from connection attempt
             int responseCode = conn.getResponseCode();
 
+            // making sure API call was successful
             if (responseCode != 200) {
                 throw new RuntimeException("Error, HttpResponseCode: " + responseCode);
             }
             else{
                 StringBuilder stringBuilder = new StringBuilder();
+
+                // Store the API results
                 Scanner scanner = new Scanner(conn.getInputStream());
 
+                // Read and store the API data into the StringBuilder
                 while(scanner.hasNext()) {
                     stringBuilder.append(scanner.nextLine());
                 }
+
+                // close the scanner
                 scanner.close();
 
+                // end the API connection
                 conn.disconnect();
 
+                // JSONParser to turn JSON file from API into Java JSON Object
                 JSONParser parser = new JSONParser();
+
+                // parse our API results stored in StringBuilder to a JSON Object
                 JSONObject jsonObjectResults = (JSONObject) parser.parse(String.valueOf(stringBuilder));
 
+                // get list of location data
                 JSONArray locationData = (JSONArray) jsonObjectResults.get("results");
+
                 return locationData;
             }
 
@@ -105,18 +125,26 @@ public class WeatherApplication {
 
         return null;
     }
+
+    // code for setting up call and connection to API
     private static HttpURLConnection fetchAPIResponse(String urlString) {
         try {
             URL url = new URL(urlString);
+
+            // sets up connection
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
+            // sets request method to GET
             connection.setRequestMethod("GET");
+
+            // connect to our API
             connection.connect();
             return connection;
         }
         catch (Exception e) {
             e.printStackTrace();
         }
+        // couldn't make connection
         return null;
     }
     public static String getCurrentTime() {
